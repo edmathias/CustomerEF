@@ -4,51 +4,270 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="CustomerModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
-        <EntityContainer Name="CustomerModelTargetContainer" >
+      <Schema Namespace="CustomerDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Emails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmailTypeId" Type="int" Nullable="false" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="LastUpdatedById" Type="int" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PersonsId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Persons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="35" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="35" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="35" Nullable="false" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="State" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="9" Nullable="false" />
+          <Property Name="CountryId" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="BirthDate" Type="datetime" Nullable="false" />
+          <Property Name="DateOfFirstContact" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedById" Type="int" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Phones">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PhoneType" Type="int" Nullable="false" />
+          <Property Name="DisplayOrder" Type="smallint" Nullable="false" />
+          <Property Name="CountryCode" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AreaCode" Type="nchar" MaxLength="3" Nullable="false" />
+          <Property Name="Prefix" Type="nchar" MaxLength="3" Nullable="false" />
+          <Property Name="Number" Type="nchar" MaxLength="4" Nullable="false" />
+          <Property Name="Extension" Type="bigint" Nullable="false" />
+          <Property Name="LastUpdatedById" Type="int" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PersonsId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_PersonEmailAssociation">
+          <End Role="Persons" Type="Self.Persons" Multiplicity="1" />
+          <End Role="Emails" Type="Self.Emails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persons">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Emails">
+              <PropertyRef Name="PersonsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonsPhones">
+          <End Role="Persons" Type="Self.Persons" Multiplicity="1" />
+          <End Role="Phones" Type="Self.Phones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persons">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Phones">
+              <PropertyRef Name="PersonsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CustomerDbModelStoreContainer">
+          <EntitySet Name="Emails" EntityType="Self.Emails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Persons" EntityType="Self.Persons" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Phones" EntityType="Self.Phones" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_PersonEmailAssociation" Association="Self.FK_PersonEmailAssociation">
+            <End Role="Persons" EntitySet="Persons" />
+            <End Role="Emails" EntitySet="Emails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonsPhones" Association="Self.FK_PersonsPhones">
+            <End Role="Persons" EntitySet="Persons" />
+            <End Role="Phones" EntitySet="Phones" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="CustomerModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
-        <EntityContainer Name="CustomerModelContainer" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Persons" EntityType="CustomerModel.Persons" />
-        </EntityContainer>
-        <EntityType Name="Persons">
+      <Schema Namespace="CustomerDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Email">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmailTypeId" Type="Int32" Nullable="false" />
+          <Property Name="EmailAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastUpdatedById" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PersonsId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_PersonEmailAssociation" FromRole="Emails" ToRole="Persons" />
         </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="35" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="35" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="35" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="9" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CountryId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateOfFirstContact" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedById" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Emails" Relationship="Self.FK_PersonEmailAssociation" FromRole="Persons" ToRole="Emails" />
+          <NavigationProperty Name="Phones" Relationship="Self.FK_PersonsPhones" FromRole="Persons" ToRole="Phones" />
+        </EntityType>
+        <EntityType Name="Phone">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PhoneType" Type="Int32" Nullable="false" />
+          <Property Name="DisplayOrder" Type="Int16" Nullable="false" />
+          <Property Name="CountryCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AreaCode" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Prefix" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Number" Type="String" MaxLength="4" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Extension" Type="Int64" Nullable="false" />
+          <Property Name="LastUpdatedById" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PersonsId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_PersonsPhones" FromRole="Phones" ToRole="Persons" />
+        </EntityType>
+        <Association Name="FK_PersonEmailAssociation">
+          <End Role="Persons" Type="Self.Person" Multiplicity="1" />
+          <End Role="Emails" Type="Self.Email" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persons">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Emails">
+              <PropertyRef Name="PersonsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonsPhones">
+          <End Role="Persons" Type="Self.Person" Multiplicity="1" />
+          <End Role="Phones" Type="Self.Phone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persons">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Phones">
+              <PropertyRef Name="PersonsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CustomerModel" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Emails" EntityType="Self.Email" />
+          <EntitySet Name="Persons" EntityType="Self.Person" />
+          <EntitySet Name="Phones" EntityType="Self.Phone" />
+          <AssociationSet Name="FK_PersonEmailAssociation" Association="Self.FK_PersonEmailAssociation">
+            <End Role="Persons" EntitySet="Persons" />
+            <End Role="Emails" EntitySet="Emails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonsPhones" Association="Self.FK_PersonsPhones">
+            <End Role="Persons" EntitySet="Persons" />
+            <End Role="Phones" EntitySet="Phones" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
-        <Alias Key="Model" Value="CustomerModel" />
-        <Alias Key="Target" Value="CustomerModel.Store" />
-        <EntityContainerMapping CdmEntityContainer="CustomerModelContainer" StorageEntityContainer="CustomerModelTargetContainer">
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CustomerDbModelStoreContainer" CdmEntityContainer="CustomerModel">
+          <EntitySetMapping Name="Emails">
+            <EntityTypeMapping TypeName="CustomerDbModel.Email">
+              <MappingFragment StoreEntitySet="Emails">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EmailTypeId" ColumnName="EmailTypeId" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="LastUpdatedById" ColumnName="LastUpdatedById" />
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="PersonsId" ColumnName="PersonsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Persons">
+            <EntityTypeMapping TypeName="CustomerDbModel.Person">
+              <MappingFragment StoreEntitySet="Persons">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="DateOfFirstContact" ColumnName="DateOfFirstContact" />
+                <ScalarProperty Name="LastUpdatedById" ColumnName="LastUpdatedById" />
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Phones">
+            <EntityTypeMapping TypeName="CustomerDbModel.Phone">
+              <MappingFragment StoreEntitySet="Phones">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PhoneType" ColumnName="PhoneType" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="AreaCode" ColumnName="AreaCode" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="LastUpdatedById" ColumnName="LastUpdatedById" />
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="PersonsId" ColumnName="PersonsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
-  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
-    <edmx:Connection>
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
       </DesignerInfoPropertySet>
-    </edmx:Connection>
-    <edmx:Options>
+    </Connection>
+    <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
-    </edmx:Options>
+    </Options>
     <!-- Diagram content (shape and connector positions) -->
-    <edmx:Diagrams>
-    </edmx:Diagrams>
-  </edmx:Designer>
+    <Diagrams></Diagrams>
+  </Designer>
 </edmx:Edmx>
