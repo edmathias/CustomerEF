@@ -67,13 +67,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CustomerModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Email.cs">
-      <DependentUpon>CustomerModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Person.cs">
       <DependentUpon>CustomerModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Phone.cs">
+    <Compile Include="PersonEmail.cs">
+      <DependentUpon>CustomerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PersonPhone.cs">
       <DependentUpon>CustomerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -101,6 +101,7 @@
       <DependentUpon>CustomerModel.edmx</DependentUpon>
       <LastGenOutput>CustomerModel.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="CustomerModel.edmx.sql" />
     <Content Include="CustomerModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>CustomerModel.edmx</DependentUpon>

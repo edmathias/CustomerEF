@@ -25,8 +25,8 @@ namespace CustomerEF
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Email> Emails { get; set; }
+        public virtual DbSet<PersonEmail> PersonEmails { get; set; }
         public virtual DbSet<Person> Persons { get; set; }
-        public virtual DbSet<Phone> Phones { get; set; }
+        public virtual DbSet<PersonPhone> PersonPhones { get; set; }
     }
 }

@@ -12,16 +12,11 @@ namespace CustomerEF
     using System;
     using System.Collections.Generic;
     
-    public partial class Phone
+    public partial class PersonEmail
     {
         public int Id { get; set; }
-        public int PhoneType { get; set; }
-        public short DisplayOrder { get; set; }
-        public string CountryCode { get; set; }
-        public string AreaCode { get; set; }
-        public string Prefix { get; set; }
-        public string Number { get; set; }
-        public long Extension { get; set; }
+        public int EmailTypeId { get; set; }
+        public string EmailAddress { get; set; }
         public int LastUpdatedById { get; set; }
         public System.DateTime LastUpdatedDate { get; set; }
         public string Notes { get; set; }

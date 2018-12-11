@@ -17,8 +17,8 @@ namespace CustomerEF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Person()
         {
-            this.Emails = new HashSet<Email>();
-            this.Phones = new HashSet<Phone>();
+            this.Emails = new HashSet<PersonEmail>();
+            this.Phones = new HashSet<PersonPhone>();
         }
     
         public int Id { get; set; }
@@ -39,8 +39,8 @@ namespace CustomerEF
         public string Notes { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Email> Emails { get; set; }
+        public virtual ICollection<PersonEmail> Emails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Phone> Phones { get; set; }
+        public virtual ICollection<PersonPhone> Phones { get; set; }
     }
 }
